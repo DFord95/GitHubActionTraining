@@ -1,3 +1,5 @@
+name: Deployment
+on: 
   workflow_dispatch:
     inputs:
       environment:
@@ -5,10 +7,15 @@
         type: environment
         required: true
 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Building ..."  
   Test:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
-    needs: Build
+    needs: build
     environment: Test
     steps:
       - run: echo "🧪 Testing..."
@@ -16,7 +23,7 @@
   Load-Test:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
-    needs: Build
+    needs: build
     environment: Load-Test
     steps:
       - run: |
